@@ -1,0 +1,11 @@
+git init
+
+git add . 
+
+git commit -m "22 7 7"
+
+git branch -M main
+
+git remote add origin https://github.com/daldon123/new-motogall.git
+
+git push -u origin
