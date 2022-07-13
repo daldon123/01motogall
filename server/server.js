@@ -9,15 +9,28 @@ const Signup = require('./info/signup')
 const userlogin = require('./info/userlogin')
 const delet_page = require('./info/delet_page')
 const coment = require('./info/coment')
-
-
+const path = require('path');
 const options = {
     origin: "*", // 접근 권한을 부여하는 도메인
     credentials: true, // 응답 헤더에 Access-Control-Allow-Credentials 추가
     optionsSuccessStatus: 200, // 응답 상태 200으로 설정
 };
+
+app.use('/',  express.static(path.join(__dirname, 'uploads')));
 app.use(cors(options));
 // app.use(cors());
+
+// const session = require("express-session");
+// const FileStore = require("session-file-store")(session);
+// app.use(
+//     session({
+//         secret: "secret key",
+//         resave: false,
+//         saveUninitialized: true,
+//         store: new FileStore(),
+//     })
+// );
+
 
 app.use('/',write_border)
 app.use('/',show_list)

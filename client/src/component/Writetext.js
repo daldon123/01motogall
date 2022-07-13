@@ -7,7 +7,7 @@ import Ckeditor from './Ckeditor';
 
 const Container = styled.div`
     width: 100%;
-    height: 100vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,6 +26,7 @@ const Button = styled.div`
     color: white;
     cursor: pointer;
     margin-top: 20px;
+    margin-bottom: 50px;
     width: 110px;
     height: 50px;
     display: flex;
@@ -43,8 +44,10 @@ const Writetext = ({login}) => {
 
     const [ Write_text, setWrite_text] = useState({
         title:"",
-        content:""
+        content:"",
     })
+
+
     const title_text = (e)=>{
         const title = e.target.value;
         setWrite_text({
@@ -54,22 +57,25 @@ const Writetext = ({login}) => {
     }
     console.log(Write_text)
 
+
     const send_Write_text = () =>{
         axios.post('http://localhost:4000/write_border',{
             title: Write_text.title || '제목없음',
             content: Write_text.content,
-            nickname: sessionStorage.getItem('userid') || '비공개'
+            nickname: sessionStorage.getItem('userid') || '비공개',
         })
-        // .then(rs=>console.log(rs))
-        // window.location.replace('/')
+        document.location.href = '/'
     }
-    // useEffect(()=>{
-    //    axios.post('http://localhost:4000/uploads2')
-    //    .then(rs=>console.log(rs.data)) 
-    // })
+
+    
+    useEffect(()=>{
+        axios.get('http://localhost:4000/asd')
+        .then(rs=>console.log(rs))
+    },[])
 
 
 
+    
   return (
     <Container>
         <Inputdata1>
@@ -85,7 +91,7 @@ const Writetext = ({login}) => {
                 <li>음란물, 차별, 비하, 혐오 및 초상권, 저작권 침해 게시물은 민, 형사상의 책임을 질 수 있습니다.</li>
             </ul>
         </div>
-        <Ckeditor setWrite_text={setWrite_text} Write_text={Write_text}/>
+        <Ckeditor setWrite_text={setWrite_text} Write_text={Write_text} />
         {/* <Eidtor setWrite_text={setWrite_text} Write_text={Write_text}/> */}
         <Button onClick={send_Write_text}>작성하기</Button>
     </Container>

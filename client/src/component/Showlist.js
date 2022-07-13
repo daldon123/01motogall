@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import styled from "styled-components"
 
 
-
 const Container = styled.div`
     width: 100%;
     height: 80vh;
@@ -136,15 +135,43 @@ const Index2Link = styled(Link)`
         text-decoration: underline;
     }
 `
+const Pagingbox = styled.div`
+    margin-top: 30px;
+    width: 55%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+`
+const Pagingbtn = styled.div`
+    padding: 5px;
+    margin: 0 3px;
+    height: 30px;
+    border: 1px solid #333;
+    cursor: pointer;
+`
 const Showlist = () => {
 
-    const [data, setdata] = useState([])
+    const [data, setdata] = useState([])//글목록
+    const [page, setpage] = useState(0)//페이징
+    console.log(page)
     useEffect(()=>{
-        axios.get('http://localhost:4000/show_list')
+        axios.get(`http://localhost:4000/show_list?page=${page}`)
         .then(rs=>setdata(rs.data))
-    },[])
+        
+    },[page])
     /* console.log(data) */
     
+    const [num, setnum] = useState('')
+    useEffect(()=>{
+        axios.get(`http://localhost:4000/show_list_page`)
+        .then(rs=>setnum(rs.data[0]['count(*)']))
+    },[])
+    const page1 = num / 10
+    const page2 = Math.ceil(page1)
+    const pagearray = [...Array(page2)].slice(0,10)
+
+
+
 
   return (
     <Container>
@@ -183,6 +210,15 @@ const Showlist = () => {
                     ))
                 }
             </Lists>
+            <Pagingbox>
+                {
+                    pagearray.map((data, key)=>(
+                        <Pagingbtn key={key} onClick={()=>{setpage(key)}}>
+                            {key+1}
+                        </Pagingbtn>
+                    ))
+                }
+            </Pagingbox>
         </List>
     </Container>
   )

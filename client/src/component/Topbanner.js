@@ -21,20 +21,26 @@ const Navigation = styled.div`
     justify-content: center;
     background-color: rgba(40,79,240,0.9);
 `
+const Navigationbar = styled.div`
+    width: 55%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
 const Navi1 = styled.div`
-    width: 40%;
+    width: 67%;
     height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
 `
 const Navi2 = styled.div`
-    width: 15%;
+    width: 35%;
     height: 50px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-left: 50px;
+    justify-content: flex-end;
 `
 const Subnav1 = styled.div`
     text-decoration: none;
@@ -70,7 +76,7 @@ const StyledSubnav1 = styled(Link)`
 const StyledSubnav2 = styled(Link)`
     text-decoration: none;
     cursor: pointer;
-    width: 30%;
+    width: 25%;
     height: 50px;
     display: flex;
     align-items: center;
@@ -128,19 +134,21 @@ const Topbanner = ({login}) => {
     <Container>
         <Headerimg/>
         <Navigation>
-            <Navi1>
-                <StyledSubnav1 to='/Notics'>공지사항</StyledSubnav1>
-                <StyledSubnav1 to='/'>자유게시판</StyledSubnav1>
-                <Subnav1>거래게시판</Subnav1>
-                <Subnav1>바이크토론</Subnav1>
-                <Subnav1>사진게시판</Subnav1>
-            </Navi1>
-            <Navi2>
-                {!login && <StyledSubnav2 to='/Login'>로그인</StyledSubnav2>}
-                {!login && <StyledSubnav2 to='/Signup'>회원가입</StyledSubnav2>}
-                {login && <StyledSubnav3 to='/'>환영합니다 {user}님</StyledSubnav3>}
-                {login && <StyledSubnav4 onClick={logout}><i className="fa-solid fa-right-from-bracket"></i></StyledSubnav4>}
-            </Navi2>
+            <Navigationbar>
+                <Navi1>
+                    <StyledSubnav1 to='/Notics'>공지사항</StyledSubnav1>
+                    <StyledSubnav1 to='/'>자유게시판</StyledSubnav1>
+                    <Subnav1>거래게시판</Subnav1>
+                    <Subnav1>바이크토론</Subnav1>
+                    <Subnav1>사진게시판</Subnav1>
+                </Navi1>
+                <Navi2>
+                    {!login && <StyledSubnav2 to='/Login'>로그인<i style={{fontSize:"15px",marginLeft:"3px"}} className="fa-solid fa-power-off"></i></StyledSubnav2>}
+                    {!login && <StyledSubnav2 to='/Signup'>회원가입<i style={{fontSize:"15px",marginLeft:"3px"}} className="fa-solid fa-plus"></i></StyledSubnav2>}
+                    {login && <StyledSubnav3 to='/'>환영합니다 {user}님</StyledSubnav3>}
+                    {login && <StyledSubnav4 onClick={logout}><i className="fa-solid fa-right-from-bracket"></i></StyledSubnav4>}
+                </Navi2>
+            </Navigationbar>
         </Navigation>
     </Container>
   )

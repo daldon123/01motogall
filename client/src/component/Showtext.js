@@ -4,6 +4,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import Reply from "./Reply";
 import Comment from "./Comment";
+import ShowtextMain from "./ShowtextMain";
 
 
 const Container = styled.div`
@@ -48,15 +49,7 @@ const Btn = styled.button`
     align-items: center;
     cursor: pointer;
 `
-const Maintext = styled.div`
-    width: 55%;
-    min-height: 400px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    border-bottom: 2px solid black;
-    margin-top: 20px;
-`
+
 const Coment = styled.div`
     width: 55%;
     display: flex;
@@ -127,15 +120,42 @@ const Showtext = () => {
     const index =  useParams();
     const indexs = index.no;
     // console.log(indexs)
-    const [data, setdata] = useState([])
+    const [data, setdata] = useState({})
     useEffect(()=>{
         axios.post('http://localhost:4000/show_text',{
             indexs:indexs
         })
-        .then(rs=>setdata(rs.data))
+        .then(rs=>setdata(rs.data[0]))
     },[indexs])
     // console.log(data)
+
+    const [idpk, setidpk] = useState([])
+
+
+    useEffect(()=>{
+        axios.post('http://localhost:4000/show_img',{
+            idpk:data.idpk
+        })
+        .then(rs=>{
+            setidpk(rs.data)
+        })
+    },[data])
+    const path = JSON.stringify(idpk)
+    const asd = JSON.parse(path).path1
+    console.log(asd)
     
+    
+
+
+
+
+    // const path = JSON.stringify(idpk)
+    // const path1 = JSON.parse(path)
+    
+
+
+    
+    // 글삭제
     const deletepage = () =>{
         axios.post('http://localhost:4000/delet_page',{
             indexs:indexs
@@ -161,56 +181,62 @@ const Showtext = () => {
             indexs:indexs
         })
         .then(res=>{
-            // console.log(res.data)
             setshwocoment(res.data)
         })
     },[indexs])
     const inputref = useRef(null)
     const [showreple, setshowreple] =useState(true)
 
+    // console.log(data.content)
+    const nowtime = data.nowtime+''
+    const day = nowtime.replace('T','').substring(0,10)
+    const time =nowtime.replace('T','').substring(10,18)
 
-
+    
+    // const [img, setimg] =useState('')
+    // // console.log(img)
+    // if(asd){
+    //     axios.get(`http://localhost:4000/show_img2?path=${asd}`)
+    //     .then(rs=>setimg(rs.data))
+    // }
+    const con = data.content+''
+    
   return (
     <>
-    {
-        data.map((rs,key)=>(
-            <Container key={key}>
-                    <Title>
-                        <Titlesh3>{rs.title}</Titlesh3>
-                        <Titlesp>{rs.nickname}</Titlesp> 
-                        <Titlesp>{rs.nowtime.substring(0,19).replace('T',' ')} | 조회수:{rs.views} | index:{rs.id} <Btn onClick={deletepage}>글삭제</Btn></Titlesp>
-                    </Title>
-                    <Maintext>
-                    {rs.content.replace(/<[^>]*>?/g,'')}
-                    </Maintext>
-                    <Showcoment>
-                        {
-                            showcoment.map((rs,key)=>(
-                                <Showcoments key={key}>
-                                        <div style={{display:'flex',flexDirection:'column', justifyContent:'space-between',width:'100%'}}>
-                                            <Comment f_nick={rs.nickname} f_id={rs.id} f_comment={rs.coment} f_time={rs.times.substring(10)} index={indexs}/>
-                                            <Reply f_id={rs.id} index={indexs}/>
-                                        </div>
-                                </Showcoments>
-                            ))
-                        }
-                    </Showcoment>
+        <Container>
+                <Title>
+                    <Titlesh3>{data.title}</Titlesh3>
+                    <Titlesp>{data.nickname}</Titlesp> 
+                    <Titlesp>{day}, {time} | 조회수:{data.views} | index:{data.id} <Btn onClick={deletepage}>글삭제</Btn></Titlesp>
+                </Title>
+                <ShowtextMain con={con} asd={asd}/>
+                
+                <Showcoment>
+                    {
+                        showcoment.map((rs,key)=>(
+                            <Showcoments key={key}>
+                                    <div style={{display:'flex',flexDirection:'column', justifyContent:'space-between',width:'100%'}}>
+                                        <Comment f_nick={rs.nickname} f_id={rs.id} f_comment={rs.coment} f_time={rs.times.substring(10)} index={indexs}/>
+                                        <Reply f_id={rs.id} index={indexs}/>
+                                    </div>
+                            </Showcoments>
+                        ))
+                    }
+                </Showcoment>
 
-                    {showreple&&
+                {showreple&&
+                <Btn3>
+                    <Btn2 onClick={()=>{setshowreple(false)}}>댓글쓰기</Btn2>
+                </Btn3>}
+                {!showreple&&<Coment>
+                    <Coments ref={inputref} placeholder="댓글을 입력해주세요" onChange={(e)=>{setcoment(e.target.value)}}/>
                     <Btn3>
-                        <Btn2 onClick={()=>{setshowreple(false)}}>댓글쓰기</Btn2>
-                    </Btn3>}
-                    {!showreple&&<Coment>
-                        <Coments ref={inputref} placeholder="댓글을 입력해주세요" onChange={(e)=>{setcoment(e.target.value)}}/>
-                        <Btn3>
-                            <Btn4 style={{marginBottom:'10px', color:'white'}} onClick={sendcoment}>작성하기</Btn4>
-                            <Btn4 style={{color:'white'}} onClick={()=>{setshowreple(true)}}>취소하기</Btn4>
-                        </Btn3>
-                    </Coment>}
-                    
-            </Container>
-        ))
-    }
+                        <Btn4 style={{marginBottom:'10px', color:'white'}} onClick={sendcoment}>작성하기</Btn4>
+                        <Btn4 style={{color:'white'}} onClick={()=>{setshowreple(true)}}>취소하기</Btn4>
+                    </Btn3>
+                </Coment>}
+                
+        </Container>
     </>
   )
 }

@@ -3,6 +3,7 @@ const db = require('../database/db');
 const app = express();
 const multer = require('multer')
 
+
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
 
@@ -18,26 +19,44 @@ var storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-app.post('/uploads2', upload.any(), (req,res)=>{
-  console.log('2번')
-  console.log(req.files[0])
-  // const path = req.files.file.path
+
+
+
+const {v4} = require('uuid')
+const uuid = () => {
+  const tokens = v4().split('-')
+  return tokens[2] + tokens[1] + tokens[0] + tokens[3] + tokens[4];
+}
+uuid();
+
+
+const makeidx =()=>{
+  return idx = uuid()
+}
+app.use('/asd',(req,res,next)=>{
+  makeidx()
+  console.log(idx)
+})
+
+app.post('/uploadimg', upload.single('upload'), (req,res)=>{
+  const path1 = req.file.filename
+  const sql = `insert into boder_img (idpk,path1) values('${idx}','${path1}')`
+  db.query(sql, (err, rs)=>{
+    console.log(sql)
+  })
 })
 
 app.post('/write_border', (req, res)=>{
-    console.log('/write_border 호출됨')
-    console.log(req.body)
-    
-    const title = req.body.title
-    const content = req.body.content
-    const nickname = req.body.nickname
+  const title = req.body.title
+  const content = req.body.content
+  const nickname = req.body.nickname
+  const sql = `insert into motogall_border_write ( title, content, nickname, idpk) values( '${title}', '${content}', '${nickname}', '${idx}')`
+  db.query(sql, (err, rs)=>{
+      console.log(sql)
+  })
 
-    const sql = `insert into motogall_border_write (title, content, nickname) values('${title}', '${content}', '${nickname}')`
-    db.query(sql, (err, rs)=>{
-        res.send(content)
-    })
-    
 })
+
 
 
 
