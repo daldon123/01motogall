@@ -8,6 +8,7 @@ import Showtext from './Showtext'
 import Signup from './Signup'
 import Login from './Login'
 import { useState, useEffect } from 'react';
+import Introduce from './Introduce'
 
 const Container = styled.div`
   display: flex;
@@ -33,7 +34,8 @@ const Mainpase = () => {
       <Container>
         <Topbanner login={login}/>
         <Routes>
-          <Route path='/' element={<Showlist/>}/>
+          <Route path='/' element={<Introduce/>}/>
+          <Route path='/Showlist' element={<Showlist/>}/>
           <Route path='/Writetext' element={<Writetext login={login}/>}/>
           <Route path='/Showtext/:no' element={<Showtext/>}/>
           <Route path='/Signup' element={<Signup/>}/>

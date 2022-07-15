@@ -14,12 +14,12 @@ const Container = styled.div`
     margin-top: 30px;
 `
 const Inputdata1 = styled.div`
-    width: 40%;
+    width: 50%;
     display: flex;
     margin-bottom: 10px;
 `
 const Inputdata2 = styled.div`
-    width: 40%;
+    width: 50%;
     display: flex;
 `
 const Button = styled.div`
@@ -57,14 +57,14 @@ const Writetext = ({login}) => {
     }
     console.log(Write_text)
 
-
+    const [usernick, setusernick] =useState('비공개')
     const send_Write_text = () =>{
         axios.post('http://localhost:4000/write_border',{
             title: Write_text.title || '제목없음',
             content: Write_text.content,
-            nickname: sessionStorage.getItem('userid') || '비공개',
+            nickname: sessionStorage.getItem('userid') || usernick,
         })
-        document.location.href = '/'
+        document.location.href = '/Showlist'
     }
 
     
@@ -82,7 +82,7 @@ const Writetext = ({login}) => {
             <input style={{width:'100%',height:'50px'}} type='text' placeholder='제목을 입력해주세요' onChange={title_text}/>
         </Inputdata1>
         <Inputdata2>
-            {!login && <input style={{marginRight:'10px',width:'30%', height:'30px'}} type='text' placeholder='닉네임을 입력해주세요'/>}
+            {!login && <input style={{marginRight:'10px',width:'30%', height:'30px'}} type='text' placeholder='닉네임을 입력해주세요' onChange={(e)=>{setusernick(e.target.value)}}/>}
             {!login && <input style={{width:'30%', height:'30px'}} type='text' placeholder='비밀번호를 입력해주세요'/>}
         </Inputdata2>
         <div style={{margin:'30px 0px'}}>
