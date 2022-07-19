@@ -163,7 +163,6 @@ const Showlist = () => {
     useEffect(()=>{
         axios.get(`http://localhost:4000/show_list?page=${page}`)
         .then(rs=>setdata(rs.data))
-        
     },[page])
     /* console.log(data) */
     
@@ -172,10 +171,10 @@ const Showlist = () => {
         axios.get(`http://localhost:4000/show_list_page`)
         .then(rs=>setnum(rs.data[0]['count(*)']))
     },[])
-    console.log(page) //현재페이지
-    const page1 = num / 10
-    const page2 = Math.ceil(page1)
     
+    const page2 = Math.ceil(num / 10)
+    console.log(page2,'page2') //현재페이지
+
     const postsPerPage = 10;  //한번에 보여줄 페이지 갯수
     const [currentPage, setCurrentPage ] = useState(1);    //현재 페이지 블럭
     const [btn1, setbtn1] = useState(false)
@@ -191,7 +190,7 @@ const Showlist = () => {
 
     const [btncolor, setbtncolor] = useState(1)
     console.log(btncolor,'btncolor')
-    
+
     useEffect(()=>{
         if(page2 > postsPerPage){
             setbtn1(true)
@@ -207,10 +206,8 @@ const Showlist = () => {
         }else{
             setbtn2(false)
         }
-        
     },[num,page2,currentPage,indexOfLast])
 
-    
 
 
   return (
@@ -253,7 +250,13 @@ const Showlist = () => {
                 {btn2&&<Pagingbtn onClick={()=>{setCurrentPage(currentPage-1)}}>이전</Pagingbtn>}
                 {
                     pagearray.map((data, key)=>(
-                        <Pagingbtn key={key} className={`${key+1 === btncolor ? 'active': ''}`} onClick={()=>(setpage(key),setbtncolor(key+1))}>
+                        <Pagingbtn  key={key} 
+                                    className={`${key+1 === btncolor ? 'active': ''}`} 
+                                    onClick={()=>{
+                                        setpage(key)
+                                        setbtncolor(key+1)
+                                    }}
+                        >
                             {key+1}
                         </Pagingbtn>
                     ))
