@@ -176,7 +176,7 @@ const Showlist = () => {
     const page1 = num / 10
     const page2 = Math.ceil(page1)
     
-    const [postsPerPage, setPostsPerPage] = useState(10);  //한번에 보여줄 페이지 갯수
+    const postsPerPage = 10;  //한번에 보여줄 페이지 갯수
     const [currentPage, setCurrentPage ] = useState(1);    //현재 페이지 블럭
     const [btn1, setbtn1] = useState(false)
     const [btn2, setbtn2] = useState(false)
@@ -198,7 +198,8 @@ const Showlist = () => {
             setbtn2(false)
         }
         
-    },[num,page2,currentPage])
+    },[num,page2,currentPage,indexOfLast])
+    
     const indexOfLast = currentPage * postsPerPage;  //최대 페이지 보여줄 갯수 처음 10개
     console.log(indexOfLast,"indexOfLast")
     const pagearray = [...Array(page2)].slice(indexOfLast-10,indexOfLast)

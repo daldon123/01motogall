@@ -2,7 +2,7 @@ git init
 
 git add . 
 
-git commit -m "22 7 7"
+git commit -m "22 7 18"
 
 git branch -M main
 
