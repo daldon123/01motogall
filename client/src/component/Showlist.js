@@ -182,6 +182,16 @@ const Showlist = () => {
     const [btn2, setbtn2] = useState(false)
     console.log(page2)//총페이지 갯수
     console.log(currentPage,"currentPage")
+
+
+
+    const indexOfLast = currentPage * postsPerPage;  //최대 페이지 보여줄 갯수 처음 10개
+    console.log(indexOfLast,"indexOfLast")
+    const pagearray = [...Array(page2)].slice(indexOfLast-10,indexOfLast)
+
+    const [btncolor, setbtncolor] = useState(1)
+    console.log(btncolor,'btncolor')
+    
     useEffect(()=>{
         if(page2 > postsPerPage){
             setbtn1(true)
@@ -199,13 +209,9 @@ const Showlist = () => {
         }
         
     },[num,page2,currentPage,indexOfLast])
-    
-    const indexOfLast = currentPage * postsPerPage;  //최대 페이지 보여줄 갯수 처음 10개
-    console.log(indexOfLast,"indexOfLast")
-    const pagearray = [...Array(page2)].slice(indexOfLast-10,indexOfLast)
 
-    const [btncolor, setbtncolor] = useState(1)
-    console.log(btncolor,'btncolor')
+    
+
 
   return (
     <Container>
